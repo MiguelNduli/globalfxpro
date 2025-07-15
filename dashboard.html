@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>GlobalFXPro - Painel</title>
+  <style>
+    body {
+      background: #f1f2f6;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background: #0a1f44;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+    .content {
+      padding: 30px;
+    }
+    .card {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    input, button {
+      padding: 10px;
+      margin: 10px 0;
+      width: 100%;
+    }
+    #chat {
+      background: #e0e0e0;
+      padding: 15px;
+      height: 200px;
+      overflow-y: auto;
+      border-radius: 10px;
+      margin-top: 10px;
+    }
+    iframe {
+      width: 100%;
+      height: 200px;
+      margin-top: 10px;
+      border-radius: 10px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>GlobalFXPro - Painel do Investidor</h1>
+  </header>
+  <div class="content">
+    <div class="card">
+      <h2>Bem-vindo, <span id="userName"></span></h2>
+      <p>Saldo atual: <strong id="balanceDisplay">0</strong> Kz</p>
+      <p>Investimento pendente: <strong id="pendingDisplay">0</strong> Kz</p>
+    </div>
+
+    <div class="card">
+      <h3>Simulador de Investimento</h3>
+      <input type="number" id="amount" placeholder="Insira o valor (2.000 Kz - 1.000.000 Kz)" />
+      <button onclick="invest()">Investir</button>
+      <p id="result"></p>
+    </div>
+
+    <div class="card">
+      <h3>Vídeo do CEO</h3>
+      <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" allowfullscreen></iframe>
+    </div>
+
+    <div class="card">
+      <h3>Chat - Marta (Suporte)</h3>
+      <div id="chat">
+        <p><strong>Marta:</strong> Olá! Precisas de ajuda com o teu investimento?</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const user = JSON.parse(localStorage.getItem('user'));
+    if (!user) window.location.href = 'index.html';
+    document.getElementById('userName').innerText = user.name;
+    document.getElementById('balanceDisplay').innerText = user.balance;
+    document.getElementById('pendingDisplay').innerText = user.pending;
+
+    function invest() {
+      const amount = parseInt(document.getElementById('amount').value);
+      if (isNaN(amount) || amount < 2000 || amount > 1000000) {
+        alert("⚠️ O valor deve estar entre 2.000 Kz e 1.000.000 Kz");
+        return;
+      }
+      const retorno = amount * 10;
+      document.getElementById('result').innerText = "Em 7 dias, o seu retorno será: " + retorno + " Kz";
+
+      user.pending += amount;
+      user.balance -= amount;
+      localStorage.setItem('user', JSON.stringify(user));
+      document.getElementById('balanceDisplay').innerText = user.balance;
+      document.getElementById('pendingDisplay').innerText = user.pending;
+
+      const chatBox = document.getElementById('chat');
+      chatBox.innerHTML += `<p><strong>Tu:</strong> Investi ${amount} Kz</p>`;
+      chatBox.innerHTML += `<p><strong>Marta:</strong> Excelente decisão! Já estamos a processar o teu retorno.</p>`;
+    }
+  </script>
+</body>
+</html>

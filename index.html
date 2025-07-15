@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>GlobalFXPro - Login</title>
+  <style>
+    body {
+      background: #0a1f44;
+      color: white;
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .login-box {
+      background: #1f2b4a;
+      padding: 30px;
+      border-radius: 10px;
+      width: 300px;
+    }
+    input {
+      display: block;
+      width: 100%;
+      margin: 10px 0;
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+    }
+    button {
+      padding: 10px;
+      width: 100%;
+      background: #00cec9;
+      color: white;
+      font-weight: bold;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="login-box">
+    <h2>GlobalFXPro</h2>
+    <input type="text" id="name" placeholder="Nome completo" />
+    <input type="email" id="email" placeholder="Email" />
+    <input type="password" id="password" placeholder="Senha" />
+    <input type="number" id="balance" placeholder="Saldo inicial (Kz)" />
+    <button onclick="register()">Cadastrar</button>
+    <hr style="margin: 20px 0;"/>
+    <input type="email" id="loginEmail" placeholder="Email" />
+    <input type="password" id="loginPassword" placeholder="Senha" />
+    <button onclick="login()">Login</button>
+  </div>
+
+  <script>
+    function register() {
+      const name = document.getElementById('name').value;
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      const balance = parseInt(document.getElementById('balance').value) || 0;
+      if (name && email && password) {
+        const user = {
+          name: name,
+          email: email,
+          password: password,
+          balance: balance,
+          pending: 0
+        };
+        localStorage.setItem('user', JSON.stringify(user));
+        alert('Cadastro efetuado com sucesso!');
+      } else {
+        alert('Preencha todos os campos.');
+      }
+    }
+
+    function login() {
+      const email = document.getElementById('loginEmail').value;
+      const password = document.getElementById('loginPassword').value;
+      const user = JSON.parse(localStorage.getItem('user'));
+      if (user && user.email === email && user.password === password) {
+        alert('Login bem-sucedido!');
+        window.location.href = 'dashboard.html';
+      } else {
+        alert('Email ou senha incorretos.');
+      }
+    }
+  </script>
+</body>
+</html>
